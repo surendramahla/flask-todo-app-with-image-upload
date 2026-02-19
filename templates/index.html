@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="text-center mb-4">Todo List</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group mb-3">
+                        {{ form.title(class="form-control", placeholder="Add a new task...") }}
+                        {{ form.image(class="form-control") }}
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="todo-list">
+            {% for todo in todos %}
+            <div class="todo-item d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    {% if todo.image_file %}
+                    <img src="{{ url_for('static', filename='uploads/' + todo.image_file) }}" class="todo-img"
+                        alt="Todo Image">
+                    {% endif %}
+                    <div>
+                        <h5 class="mb-0">{{ todo.title }}</h5>
+                        <small class="text-muted">{{ todo.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+                    </div>
+                </div>
+                <a href="{{ url_for('delete', id=todo.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
